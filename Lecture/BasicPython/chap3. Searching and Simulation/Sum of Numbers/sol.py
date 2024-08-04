@@ -1,15 +1,12 @@
 from util.importer import Importer, get_current_path
+from util.text_cleaner import spi
 from typing import TextIO, List
 
 
 def get_starting_values(file_stream: TextIO):
-    arr = []
-    for interval in file_stream:
-        strs = interval.replace("\n", "")
-        if strs:
-            num = list(map(int, interval.replace("\n", "").split(" ")))
-            arr.append(num)
-    return [arr]
+    N, M = spi(file_stream.readline())
+    arr = spi(file_stream.readline())
+    return [N, M, arr]
 
 
 def get_ending_values(file_stream: TextIO):
@@ -17,13 +14,34 @@ def get_ending_values(file_stream: TextIO):
     return ans
 
 
-def solve_problem(interval_arr: List[List[int]]):
+def solve_problem(N: int, M: int, arr: List[List[int]]):
+    """ 3-5 """
     """
-     3-5
+    목표값 M
+    수열의 길이 N
+    실제 arr -> arr
     """
-    original_list = [i+1 for i in range(20)]
+    result = 0
+    # print(arr)
+    for l in range(1, N+1):
+        # print("길이 -->", l)
+        s = 0
+        e = l
+        while e <= N:
+            tmp = sum(arr[s:e])
+            # print("partial -> ", arr[s:e], end=' ')
+            # print(" --> ", tmp)
+            # print()
+            if tmp == M:
+                result += 1
+            e += 1
+            s += 1
+            if e == N:
+                break
+        # print("\n")
 
-    return original_list
+    print(result)
+    return arr
 
 
 if __name__ == '__main__':
